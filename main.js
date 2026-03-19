@@ -51,35 +51,51 @@ function startRecommendation() {
 
   navigator.geolocation.getCurrentPosition(
     (position) => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      const userLocation = new kakao.maps.LatLng(lat, lng);
+      try {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const userLocation = new kakao.maps.LatLng(lat, lng);
 
-      // 장소 검색 서비스 객체 생성
-      const ps = new kakao.maps.services.Places();
+        // 장소 검색 서비스 객체 생성
+        const ps = new kakao.maps.services.Places();
 
-      // 음식점(FD6) 카테고리 내 키워드 검색 (10km 반경)
-      ps.keywordSearch(category, (data, status) => {
+        // 카테고리에 따른 그룹 코드 설정 (음식점: FD6, 카페: CE7)
+        const categoryGroupCode = (category === '카페') ? 'CE7' : 'FD6';
+
+        // 키워드 검색 (10km 반경)
+        ps.keywordSearch(category, (data, status) => {
+          loadingSpinner.style.display = 'none';
+
+          if (status === kakao.maps.services.Status.OK) {
+            const randomIndex = Math.floor(Math.random() * data.length);
+            const selectedPlace = data[randomIndex];
+            displayResult(selectedPlace);
+          } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+            alert('주변 10km 이내에 해당 메뉴의 식당을 찾을 수 없습니다.');
+          } else {
+            alert('검색 중 오류가 발생했습니다. (상태코드: ' + status + ')');
+          }
+        }, {
+          location: userLocation,
+          radius: 10000,
+          category_group_code: categoryGroupCode,
+          sort: kakao.maps.services.SortBy.DISTANCE
+        });
+      } catch (e) {
+        console.error(e);
         loadingSpinner.style.display = 'none';
-
-        if (status === kakao.maps.services.Status.OK) {
-          const randomIndex = Math.floor(Math.random() * data.length);
-          const selectedPlace = data[randomIndex];
-          displayResult(selectedPlace);
-        } else {
-          alert('주변 10km 이내에 해당 메뉴의 식당을 찾을 수 없습니다.');
-        }
-      }, {
-        location: userLocation,
-        radius: 10000,
-        sort: kakao.maps.services.SortBy.DISTANCE
-      });
+        alert('추천 기능을 실행하는 중 오류가 발생했습니다: ' + e.message);
+      }
     },
     (err) => {
       loadingSpinner.style.display = 'none';
-      alert('위치 정보를 가져올 수 없습니다: ' + err.message);
+      let errorMsg = '위치 정보를 가져올 수 없습니다.';
+      if (err.code === 1) errorMsg += ' (위치 권한이 거부되었습니다)';
+      else if (err.code === 2) errorMsg += ' (위치 확인 불가)';
+      else if (err.code === 3) errorMsg += ' (시간 초과)';
+      alert(errorMsg + ': ' + err.message);
     },
-    { enableHighAccuracy: true, timeout: 5000 }
+    { enableHighAccuracy: false, timeout: 10000 }
   );
 }
 
