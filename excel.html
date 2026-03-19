@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>엑셀 마스터 가이드 - 오피스 헬퍼</title>
+  <link href='/style.css' rel='stylesheet'>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="/" class="logo-link"><h1 class="logo">💼 오피스 헬퍼</h1></a>
+      <button id="theme-toggle">🌙 다크 모드</button>
+    </header>
+
+    <main>
+      <a href="/office.html" class="back-link">&larr; 업무 가이드로 돌아가기</a>
+      
+      <section class="page-card">
+        <h2 style="color: var(--excel-color);">📗 직장인 필수 엑셀(Excel) 가이드</h2>
+        <p>엑셀 작업 시간을 절반으로 줄여주는 핵심 노하우를 공개합니다.</p>
+
+        <h3>1. 필수 단축키 (Best 5)</h3>
+        <table class="excel-table">
+          <thead>
+            <tr>
+              <th>기능</th>
+              <th>단축키</th>
+              <th>설명</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>범위 선택</td>
+              <td><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">Shift</span> + <span class="shortcut-key">방향키</span></td>
+              <td>데이터가 있는 끝까지 범위를 즉시 선택합니다.</td>
+            </tr>
+            <tr>
+              <td>표 만들기</td>
+              <td><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">T</span></td>
+              <td>선택된 범위를 즉시 데이터 표로 변환합니다.</td>
+            </tr>
+            <tr>
+              <td>값만 붙여넣기</td>
+              <td><span class="shortcut-key">Alt</span> + <span class="shortcut-key">E</span> + <span class="shortcut-key">S</span> + <span class="shortcut-key">V</span></td>
+              <td>수식 제외 데이터 값만 붙여넣을 때 유용합니다.</td>
+            </tr>
+            <tr>
+              <td>필터 설정</td>
+              <td><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">Shift</span> + <span class="shortcut-key">L</span></td>
+              <td>데이터 필터를 즉시 켜고 끕니다.</td>
+            </tr>
+            <tr>
+              <td>오늘 날짜 입력</td>
+              <td><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">;</span></td>
+              <td>현재 날짜를 즉시 입력합니다.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>2. 반드시 알아야 할 필수 함수</h3>
+        <div class="info-text" style="border-left-color: var(--excel-color);">
+          <ul>
+            <li><strong>VLOOKUP:</strong> 다른 표에서 특정 값을 찾아올 때 사용 (가장 빈번)</li>
+            <li><strong>IF:</strong> 조건에 따라 다른 결과를 표시할 때 사용</li>
+            <li><strong>SUMIF / COUNTIF:</strong> 특정 조건에 맞는 합계나 개수를 구할 때 사용</li>
+            <li><strong>TEXTJOIN:</strong> 여러 셀의 텍스트를 기호와 함께 하나로 합칠 때 사용</li>
+            <li><strong>XLOOKUP:</strong> VLOOKUP의 한계를 넘는 최신형 조회 함수</li>
+          </ul>
+        </div>
+
+        <h3>3. 데이터 정리 팁</h3>
+        <p>엑셀 작업 전, 데이터 형식을 통일하는 것이 수식 오류를 줄이는 첫 번째 단계입니다.</p>
+        <ul>
+          <li>날짜 형식은 반드시 YYYY-MM-DD 형태로 통일하세요.</li>
+          <li>숫자 데이터에 문자가 섞여 있지 않은지 확인하세요.</li>
+          <li>'중복된 항목 제거' 기능을 활용해 데이터를 정제하세요.</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+  <script defer type="text/javascript" src="/main.js"></script>
+</body>
+</html>

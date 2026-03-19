@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>점심 메뉴 추천 - 오피스 헬퍼</title>
+  <link href='/style.css' rel='stylesheet'>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="/" class="logo-link"><h1 class="logo">💼 오피스 헬퍼</h1></a>
+      <button id="theme-toggle">🌙 다크 모드</button>
+    </header>
+
+    <main>
+      <a href="/" class="back-link">&larr; 메인으로 돌아가기</a>
+      
+      <section class="page-card">
+        <h2>🍱 오늘의 점심 메뉴 추천</h2>
+        <p>고민되는 점심 시간, 상황별 최적의 메뉴를 골라드립니다.</p>
+        
+        <div class="recommend-box">
+          <select id="category-select" class="form-input">
+            <option value="team">👥 팀원들과 함께</option>
+            <option value="quick">🏃 바쁠 때 (혼밥)</option>
+            <option value="healthy">🥗 건강하게 (다이어트)</option>
+            <option value="cheat">✨ 특별한 날 (보상 메뉴)</option>
+          </select>
+          
+          <div id="recommendation-display">메뉴를 추천해 드릴게요!</div>
+          <button id="recommend-btn" class="main-btn">추천받기!</button>
+          
+          <div id="map-link-container"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script defer type="text/javascript" src="/main.js"></script>
+</body>
+</html>

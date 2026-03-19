@@ -6,123 +6,59 @@
   <meta name="google-adsense-account" content="ca-pub-1377959282533687">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1377959282533687"
      crossorigin="anonymous"></script>
-  <title>오피스 헬퍼 - 직장인 점심 & 업무 꿀팁 포털</title>
+  <title>오피스 헬퍼 - 직장인 필수 포털</title>
   <link href='/style.css' rel='stylesheet'>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1 class="logo">💼 오피스 헬퍼</h1>
+      <a href="/" class="logo-link"><h1 class="logo">💼 오피스 헬퍼</h1></a>
       <button id="theme-toggle">🌙 다크 모드</button>
     </header>
 
     <main>
-      <!-- 1. 점심 추천 섹션 -->
-      <section class="card hero-section">
-        <span class="badge">LUNCH</span>
-        <h2>🍱 점심 고민, 여기서 끝내세요!</h2>
-        <div class="recommend-box">
-          <select id="category-select" class="form-input">
-            <option value="team">👥 팀원들과 (든든한 한끼)</option>
-            <option value="quick">🏃 바쁠 때 (간단/신속)</option>
-            <option value="healthy">🥗 건강하게 (다이어트/건강식)</option>
-            <option value="cheat">✨ 특별한 날 (보상/맛집)</option>
-          </select>
-          <div id="recommendation-display">
-            <p>메뉴를 추천해 드릴게요!</p>
-          </div>
-          <button id="recommend-btn" class="main-btn">메뉴 추천받기!</button>
-          <div id="map-link-container" style="margin-top: 15px;"></div>
-        </div>
-      </section>
+      <div style="text-align: center; margin-bottom: 40px;">
+        <h2>환영합니다! 오늘 어떤 도움이 필요하신가요?</h2>
+        <p>직장인 여러분의 건강하고 효율적인 오피스 라이프를 지원합니다.</p>
+      </div>
 
-      <!-- 2. 업무 꿀팁 섹션 (신규) -->
-      <section class="card hack-section">
-        <span class="badge blue">OFFICE HACK</span>
-        <h2>⌨️ 오늘의 업무 꿀팁</h2>
-        <div id="hack-display" class="info-text">
-          버튼을 누르면 유용한 팁이 나옵니다.
-        </div>
-        <button id="hack-btn" class="sub-btn">다른 팁 보기</button>
-      </section>
+      <div class="category-grid">
+        <!-- 점심 메뉴 카테고리 -->
+        <a href="/lunch.html" class="category-card">
+          <div class="icon">🍱</div>
+          <h3>점심 메뉴 추천</h3>
+          <p>오늘 뭐 먹지? 상황별 맞춤 메뉴와 주변 식당 검색까지!</p>
+        </a>
 
-      <!-- 3. 거북목 예방 스트레칭 (정보성 컨텐츠 강화) -->
-      <section class="card text-content">
-        <span class="badge green">HEALTH</span>
-        <h2>🐢 거북목 예방 1분 스트레칭</h2>
-        <p>장시간 모니터를 보는 직장인들을 위한 필수 스트레칭입니다.</p>
-        <div class="stretch-guide">
-          <div class="stretch-item">
-            <strong>1. 목 뒤로 젖히기</strong>
-            <p>깍지 낀 손으로 뒤통수를 감싸고 천천히 뒤로 젖혀 10초 유지하세요.</p>
-          </div>
-          <div class="stretch-item">
-            <strong>2. 어깨 돌리기</strong>
-            <p>양어깨를 귀 근처까지 올렸다가 뒤로 크게 원을 그리며 내려주세요.</p>
-          </div>
-          <div class="stretch-item">
-            <strong>3. 가슴 펴기</strong>
-            <p>등 뒤에서 손을 맞잡고 팔을 쭉 펴면서 가슴을 앞으로 내미세요.</p>
-          </div>
-        </div>
-      </section>
+        <!-- 업무 꿀팁/엑셀 카테고리 -->
+        <a href="/office.html" class="category-card">
+          <div class="icon">💻 업무 & 엑셀 가이드</div>
+          <h3>업무 효율 극대화</h3>
+          <p>엑셀 단축키부터 이메일 매너까지, 일잘러의 비밀 노하우</p>
+        </a>
 
-      <!-- 4. 퇴근 후 활동 추천 (신규) -->
-      <section class="card hobby-section">
-        <span class="badge orange">AFTER WORK</span>
-        <h2>🎬 오늘 퇴근하고 뭐 하지?</h2>
-        <div id="hobby-display" class="info-text">
-          번아웃 방지를 위한 활동을 추천합니다.
-        </div>
-        <button id="hobby-btn" class="sub-btn">다른 활동 추천</button>
-      </section>
+        <!-- 운동/건강 카테고리 -->
+        <a href="/health.html" class="category-card">
+          <div class="icon">🧘 스트레칭 & 건강</div>
+          <h3>거북목 탈출 가이드</h3>
+          <p>사무실에서 1분이면 충분한 실천 건강 스트레칭</p>
+        </a>
 
-      <!-- 5. 비즈니스 이메일 매너 (정보성 컨텐츠 추가) -->
-      <section class="card text-content">
-        <h2>📧 비즈니스 이메일 작성 팁</h2>
-        <ul>
-          <li><strong>명확한 제목:</strong> [보고], [공지], [요청] 등으로 제목의 목적을 밝히세요.</li>
-          <li><strong>정중한 인사:</strong> 소속과 이름을 밝히는 첫인사를 잊지 마세요.</li>
-          <li><strong>핵심 내용 요약:</strong> 본문은 가급적 짧고 명확하게 번호를 매겨 전달하세요.</li>
-          <li><strong>첨부 파일 확인:</strong> 메일을 보내기 전 첨부 파일 누락 여부를 반드시 체크하세요.</li>
-        </ul>
-      </section>
+        <!-- 게시판/소통 -->
+        <a href="#community" class="category-card">
+          <div class="icon">💬 직장인 소통</div>
+          <h3>자유 게시판</h3>
+          <p>동료들과 나누는 솔직한 직장 생활 이야기</p>
+        </a>
+      </div>
 
-      <!-- 제휴 문의 -->
-      <section class="card">
-        <h2>🤝 파트너십 문의</h2>
-        <form action="https://formspree.io/f/mlgpzrkn" method="POST" class="partnership-form">
-          <div class="form-group">
-            <label for="name">성함 / 기업명</label>
-            <input type="text" name="name" id="name" required placeholder="성함">
-          </div>
-          <div class="form-group">
-            <label for="email">이메일</label>
-            <input type="email" name="email" id="email" required placeholder="example@email.com">
-          </div>
-          <div class="form-group">
-            <label for="message">문의 사항</label>
-            <textarea name="message" id="message" required placeholder="문의 내용을 입력하세요"></textarea>
-          </div>
-          <button type="submit" class="submit-btn">문의하기</button>
-        </form>
-      </section>
-
-      <!-- 게시판 -->
-      <section class="card">
-        <h2>💬 직장인 소통 공간</h2>
-        <div id="disqus_thread"></div>
-        <script>
-            (function() {
-            var d = document, s = d.createElement('script');
-            s.src = 'https://project1-hrzhxp7kcy.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-            })();
-        </script>
+      <!-- 애드센스 최적화를 위한 하단 정보성 텍스트 -->
+      <section class="page-card" style="margin-top: 40px;">
+        <h3>💡 왜 오피스 헬퍼인가요?</h3>
+        <p>오피스 헬퍼는 매일 반복되는 직장인들의 고민을 해결하기 위해 만들어졌습니다. 메뉴 결정 장애부터 복잡한 엑셀 수식까지, 여러분의 시간을 아껴드리는 것이 우리의 목표입니다.</p>
       </section>
     </main>
 
