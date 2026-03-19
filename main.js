@@ -17,6 +17,17 @@ themeToggle.addEventListener('click', () => {
   htmlElement.setAttribute('data-theme', newTheme);
   localStorage.setItem('theme', newTheme);
   updateToggleButton(newTheme);
+
+  // Reset Disqus to match the new theme if DISQUS is loaded
+  if (typeof DISQUS !== 'undefined') {
+    DISQUS.reset({
+      reload: true,
+      config: function () {
+        this.page.identifier = window.location.pathname;
+        this.page.url = window.location.href;
+      }
+    });
+  }
 });
 
 // Lunch Recommendation Logic
