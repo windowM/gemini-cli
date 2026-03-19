@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>주변 맛집 추천 - 오피스 헬퍼</title>
   <link href='/style.css' rel='stylesheet'>
-  <!-- 카카오맵 API (키가 필요합니다. 발급 전까지는 지도가 보이지 않을 수 있습니다) -->
-  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7b6757584bc5fffe4801af81647d0e3&libraries=services"></script>
+  <!-- 카카오맵 API (HTTPS 명시 및 autoload=false 추가) -->
+  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=c7b6757584bc5fffe4801af81647d0e3&libraries=services&autoload=false"></script>
 </head>
 <body>
   <div class="container">
@@ -34,22 +34,22 @@
           
           <button id="recommend-btn" class="main-btn">내 주변 식당 검색 및 추천!</button>
           
-          <div id="loading-spinner" style="display:none; margin: 15px 0;">위치 정보를 파악하고 식당을 찾는 중...</div>
+          <div id="loading-spinner" style="display:none; margin: 15px 0; color: var(--accent-color); font-weight: bold;">위치 정보를 파악하고 식당을 찾는 중...</div>
           
           <!-- 추천 결과 영역 -->
           <div id="result-container" style="display:none; margin-top: 25px; text-align: left;">
-            <div id="recommendation-display" style="font-size: 1.4rem; color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+            <div id="recommendation-display" style="font-size: 1.4rem; color: var(--accent-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 15px;">
               <!-- 식당 이름 -->
             </div>
             
-            <div id="place-info" style="margin: 15px 0; font-size: 0.95rem;">
-              <p>📌 <strong>주소:</strong> <span id="place-address"></span></p>
-              <p>📞 <strong>전화:</strong> <span id="place-phone"></span></p>
-              <p>🍴 <strong>분류:</strong> <span id="place-category"></span></p>
+            <div id="place-info" style="margin: 15px 0; font-size: 0.95rem; background: var(--bg-color); padding: 15px; border-radius: 8px;">
+              <p style="margin: 5px 0;">📌 <strong>주소:</strong> <span id="place-address"></span></p>
+              <p style="margin: 5px 0;">📞 <strong>전화:</strong> <span id="place-phone"></span></p>
+              <p style="margin: 5px 0;">🍴 <strong>분류:</strong> <span id="place-category"></span></p>
             </div>
 
             <!-- 미니맵 영역 -->
-            <div id="mini-map" style="width:100%; height:250px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border-color);"></div>
+            <div id="mini-map" style="width:100%; height:300px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border-color); background: #eee;"></div>
             
             <div id="map-link-container">
               <!-- 카카오맵 상세페이지 링크 -->
@@ -58,10 +58,14 @@
         </div>
       </section>
 
-      <!-- API 키 등록 가이드 (임시) -->
-      <section class="page-card" id="api-guide" style="font-size: 0.85rem; opacity: 0.7;">
-        <h3>⚠️ 지도가 보이지 않나요?</h3>
-        <p>카카오맵 API를 사용하려면 개인 API 키가 필요합니다. <code>lunch.html</code> 파일의 9번 라인 <code>YOUR_KAKAO_MAPS_APP_KEY</code> 부분을 본인의 JavaScript 키로 변경해주세요.</p>
+      <!-- 도메인 등록 확인 안내 -->
+      <section class="page-card" style="font-size: 0.85rem; border-top: 3px solid #ff0000;">
+        <h3 style="color: #ff0000;">🚨 필독: 작동하지 않을 때 체크리스트</h3>
+        <ol style="padding-left: 20px;">
+          <li><strong>도메인 등록:</strong> <a href="https://developers.kakao.com/console/app" target="_blank">카카오 개발자 콘솔</a> -> 내 애플리케이션 -> 플랫폼 -> Web 에 현재 사이트 주소가 등록되어 있어야 합니다. (예: <code>https://your-site.pages.dev</code>)</li>
+          <li><strong>위치 권한:</strong> 브라우저 상단 주소창 옆의 자물쇠 아이콘을 눌러 '위치 정보' 권한을 허용해야 합니다.</li>
+          <li><strong>HTTPS 확인:</strong> 배포된 사이트가 HTTPS로 접속 중인지 확인하세요.</li>
+        </ol>
       </section>
     </main>
   </div>

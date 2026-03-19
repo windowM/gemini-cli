@@ -1,4 +1,4 @@
-// 오피스 헬퍼 - 메인 스크립트 (카카오맵 API 연동 버전)
+// 오피스 헬퍼 - 메인 스크립트 (카카오맵 API 안정화 버전)
 
 // 1. 공통 기능: 테마 토글
 const themeToggle = document.getElementById('theme-toggle');
@@ -20,108 +20,104 @@ if (themeToggle) {
   });
 }
 
-// 2. 점심 추천 로직 (lunch.html 전용 - 카카오맵 API 사용)
+// 2. 점심 추천 로직 (lunch.html)
 const recommendBtn = document.getElementById('recommend-btn');
-if (recommendBtn && typeof kakao !== 'undefined') {
-  const ps = new kakao.maps.services.Places(); // 장소 검색 객체
-  let miniMap = null;
-  let marker = null;
-
+if (recommendBtn) {
   recommendBtn.addEventListener('click', () => {
-    const category = document.getElementById('category-select').value;
-    const loadingSpinner = document.getElementById('loading-spinner');
-    const resultContainer = document.getElementById('result-container');
-
-    loadingSpinner.style.display = 'block';
-    resultContainer.style.display = 'none';
-
-    // 사용자의 현재 위치 가져오기 (Geolocation)
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude; // 위도
-          const lng = position.coords.longitude; // 경도
-          const userLocation = new kakao.maps.LatLng(lat, lng);
-
-          // 장소 검색 옵션: 카테고리(음식점), 반경 10km (10000m)
-          const searchOptions = {
-            location: userLocation,
-            radius: 10000, // 10km
-            sort: kakao.maps.services.SortBy.DISTANCE
-          };
-
-          // 키워드로 장소 검색 (예: "강남역 한식")
-          ps.keywordSearch(category, (data, status) => {
-            loadingSpinner.style.display = 'none';
-
-            if (status === kakao.maps.services.Status.OK) {
-              // 검색된 식당 중 하나를 랜덤하게 선택
-              const randomIndex = Math.floor(Math.random() * data.length);
-              const selectedPlace = data[randomIndex];
-
-              // 결과 표시
-              displayRecommendation(selectedPlace);
-            } else {
-              alert('주변 10km 이내에 해당 조건의 식당을 찾을 수 없습니다.');
-            }
-          }, searchOptions);
-        },
-        () => {
-          loadingSpinner.style.display = 'none';
-          alert('위치 정보를 가져올 수 없습니다. 브라우저의 위치 권한을 확인해주세요.');
-        }
-      );
-    } else {
-      alert('이 브라우저는 위치 정보를 지원하지 않습니다.');
-    }
-  });
-
-  // 추천 결과 화면 표시 함수
-  function displayRecommendation(place) {
-    const resultContainer = document.getElementById('result-container');
-    const display = document.getElementById('recommendation-display');
-    const addr = document.getElementById('place-address');
-    const phone = document.getElementById('place-phone');
-    const cate = document.getElementById('place-category');
-    const mapLinkContainer = document.getElementById('map-link-container');
-
-    display.innerHTML = `<strong>${place.place_name}</strong>`;
-    addr.textContent = place.road_address_name || place.address_name;
-    phone.textContent = place.phone || '전화번호 정보 없음';
-    cate.textContent = place.category_name;
-    
-    mapLinkContainer.innerHTML = `
-      <a href="${place.place_url}" target="_blank" class="map-btn">
-        💛 카카오맵에서 상세보기 / 메뉴 확인
-      </a>
-    `;
-
-    resultContainer.style.display = 'block';
-
-    // 미니맵 생성 및 마커 표시
-    const mapContainer = document.getElementById('mini-map');
-    const placePosition = new kakao.maps.LatLng(place.y, place.x);
-
-    const mapOption = {
-      center: placePosition,
-      level: 3 // 확대 레벨
-    };
-
-    if (!miniMap) {
-      miniMap = new kakao.maps.Map(mapContainer, mapOption);
-      marker = new kakao.maps.Marker({
-        position: placePosition,
-        map: miniMap
+    // 카카오맵 SDK 로드 여부 확인 및 명시적 로드
+    if (typeof kakao !== 'undefined' && kakao.maps) {
+      kakao.maps.load(() => {
+        startRecommendation();
       });
     } else {
-      miniMap.setCenter(placePosition);
-      marker.setPosition(placePosition);
-      miniMap.relayout(); // 지도가 정상적으로 표시되도록 재배치
+      alert('카카오맵 API가 로드되지 않았습니다. 도메인 등록 및 키를 확인해주세요.');
     }
+  });
+}
+
+function startRecommendation() {
+  const loadingSpinner = document.getElementById('loading-spinner');
+  const resultContainer = document.getElementById('result-container');
+  const category = document.getElementById('category-select').value;
+
+  loadingSpinner.style.display = 'block';
+  resultContainer.style.display = 'none';
+
+  if (!navigator.geolocation) {
+    alert('이 브라우저는 위치 정보를 지원하지 않습니다.');
+    loadingSpinner.style.display = 'none';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const userLocation = new kakao.maps.LatLng(lat, lng);
+
+      // 장소 검색 서비스 객체 생성
+      const ps = new kakao.maps.services.Places();
+
+      // 음식점(FD6) 카테고리 내 키워드 검색 (10km 반경)
+      ps.keywordSearch(category, (data, status) => {
+        loadingSpinner.style.display = 'none';
+
+        if (status === kakao.maps.services.Status.OK) {
+          const randomIndex = Math.floor(Math.random() * data.length);
+          const selectedPlace = data[randomIndex];
+          displayResult(selectedPlace);
+        } else {
+          alert('주변 10km 이내에 해당 메뉴의 식당을 찾을 수 없습니다.');
+        }
+      }, {
+        location: userLocation,
+        radius: 10000,
+        sort: kakao.maps.services.SortBy.DISTANCE
+      });
+    },
+    (err) => {
+      loadingSpinner.style.display = 'none';
+      alert('위치 정보를 가져올 수 없습니다: ' + err.message);
+    },
+    { enableHighAccuracy: true, timeout: 5000 }
+  );
+}
+
+let map = null;
+let marker = null;
+
+function displayResult(place) {
+  const container = document.getElementById('result-container');
+  const mapContainer = document.getElementById('mini-map');
+  
+  document.getElementById('recommendation-display').innerHTML = `오늘의 메뉴: <strong>${place.place_name}</strong>`;
+  document.getElementById('place-address').textContent = place.road_address_name || place.address_name;
+  document.getElementById('place-phone').textContent = place.phone || '전화번호 정보 없음';
+  document.getElementById('place-category').textContent = place.category_name;
+  
+  document.getElementById('map-link-container').innerHTML = `
+    <a href="${place.place_url}" target="_blank" class="map-btn">
+      💛 카카오맵에서 상세 정보 & 메뉴 확인
+    </a>
+  `;
+
+  container.style.display = 'block';
+
+  const position = new kakao.maps.LatLng(place.y, place.x);
+  const options = { center: position, level: 3 };
+
+  // 지도가 이미 생성되어 있으면 위치만 이동, 없으면 새로 생성
+  if (!map) {
+    map = new kakao.maps.Map(mapContainer, options);
+    marker = new kakao.maps.Marker({ position: position, map: map });
+  } else {
+    map.setCenter(position);
+    marker.setPosition(position);
+    setTimeout(() => { map.relayout(); map.setCenter(position); }, 100);
   }
 }
 
-// 3. 업무 꿀팁 로직 (office.html 전용)
+// 3. 업무 꿀팁 로직 (office.html)
 const officeHackBtn = document.getElementById('hack-btn');
 if (officeHackBtn) {
   const officeHacks = [
