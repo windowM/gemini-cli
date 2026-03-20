@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BDTTSJ1EDS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-BDTTSJ1EDS');
+  </script>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "vyh8ejfwgg");
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>현재 자산 파악 - 오피스 헬퍼</title>
+  <link href='/style.css' rel='stylesheet'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="/" class="logo-link"><h1 class="logo">💼 오피스 헬퍼</h1></a>
+      <button id="theme-toggle">🌙 다크 모드</button>
+    </header>
+
+    <main>
+      <a href="/" class="back-link">&larr; 홈으로 돌아가기</a>
+
+      <div class="total-balance-card">
+        <span class="label">💰 나의 현재 총 자산</span>
+        <div id="total-asset-value" class="value">0원</div>
+      </div>
+
+      <div class="asset-summary">
+        <div class="summary-item">
+          <span class="label">입출금</span>
+          <span id="summary-general" class="value">0원</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">저축</span>
+          <span id="summary-savings" class="value">0원</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">증권</span>
+          <span id="summary-securities" class="value">0원</span>
+        </div>
+      </div>
+
+      <section class="page-card">
+        <h3>🏦 자산 정보 추가</h3>
+        <form id="asset-form" class="asset-form">
+          <div class="form-group">
+            <label for="asset-type">자산 유형</label>
+            <select id="asset-type" class="form-input" required>
+              <option value="입출금">일반 입출금통장 (은행별)</option>
+              <option value="저축">저축통장 (예금, 청약, 적금)</option>
+              <option value="증권">증권 (주식, 채권, 계좌)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bank-name">은행/기관명</label>
+            <input type="text" id="bank-name" class="form-input" placeholder="예: 신한은행, 삼성증권" required>
+          </div>
+          <div class="form-group">
+            <label for="account-name">계좌 별칭</label>
+            <input type="text" id="account-name" class="form-input" placeholder="예: 생활비 통장, 주식 계좌">
+          </div>
+          <div class="form-group">
+            <label for="asset-balance">잔액 (원)</label>
+            <input type="number" id="asset-balance" class="form-input" placeholder="숫자만 입력하세요" required>
+          </div>
+          <button type="submit" class="main-btn">자산 추가하기</button>
+        </form>
+      </section>
+
+      <section class="page-card">
+        <h3>📋 나의 자산 목록</h3>
+        <div id="asset-list-container" class="asset-list-section">
+          <!-- 자산 리스트가 여기에 동적으로 생성됩니다. -->
+          <p style="text-align: center; opacity: 0.5; margin: 40px 0;">아직 입력된 자산 정보가 없습니다.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="main-footer">
+      <div class="footer-links">
+        <a href="/privacy.html">개인정보처리방침</a>
+        <a href="/terms.html">이용약관</a>
+      </div>
+      <p>&copy; 2026 오피스 헬퍼. All rights reserved.</p>
+    </footer>
+  </div>
+  <script defer type="text/javascript" src="/main.js"></script>
+</body>
+</html>

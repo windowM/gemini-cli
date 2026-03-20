@@ -151,3 +151,101 @@ if (officeHackBtn) {
   });
   officeHackBtn.click();
 }
+
+// 4. 자산 관리 로직 (money.html)
+const assetForm = document.getElementById('asset-form');
+if (assetForm) {
+  const assetListContainer = document.getElementById('asset-list-container');
+  const totalAssetValue = document.getElementById('total-asset-value');
+  const summaryGeneral = document.getElementById('summary-general');
+  const summarySavings = document.getElementById('summary-savings');
+  const summarySecurities = document.getElementById('summary-securities');
+
+  let assets = JSON.parse(localStorage.getItem('userAssets')) || [];
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('ko-KR').format(amount) + '원';
+  };
+
+  const renderAssets = () => {
+    if (assets.length === 0) {
+      assetListContainer.innerHTML = '<p style="text-align: center; opacity: 0.5; margin: 40px 0;">아직 입력된 자산 정보가 없습니다.</p>';
+      totalAssetValue.textContent = '0원';
+      summaryGeneral.textContent = '0원';
+      summarySavings.textContent = '0원';
+      summarySecurities.textContent = '0원';
+      return;
+    }
+
+    const totals = { '입출금': 0, '저축': 0, '증권': 0 };
+    let grandTotal = 0;
+
+    // 유형별로 그룹화
+    const grouped = assets.reduce((acc, asset) => {
+      if (!acc[asset.type]) acc[asset.type] = [];
+      acc[asset.type].push(asset);
+      totals[asset.type] += Number(asset.balance);
+      grandTotal += Number(asset.balance);
+      return acc;
+    }, {});
+
+    let html = '';
+    for (const type in grouped) {
+      html += `
+        <div class="asset-group">
+          <h4 class="asset-type-header">${type} (${formatCurrency(totals[type])})</h4>
+          <table class="asset-table">
+            <tbody>
+              ${grouped[type].map(asset => `
+                <tr>
+                  <td>
+                    <strong>${asset.bank}</strong><br>
+                    <small style="opacity: 0.6;">${asset.name || '-'}</small>
+                  </td>
+                  <td class="amount">${formatCurrency(asset.balance)}</td>
+                  <td style="width: 40px; text-align: right;">
+                    <button class="delete-btn" data-id="${asset.id}">삭제</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    assetListContainer.innerHTML = html;
+    totalAssetValue.textContent = formatCurrency(grandTotal);
+    summaryGeneral.textContent = formatCurrency(totals['입출금']);
+    summarySavings.textContent = formatCurrency(totals['저축']);
+    summarySecurities.textContent = formatCurrency(totals['증권']);
+
+    // 삭제 이벤트 연결
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.target.getAttribute('data-id');
+        assets = assets.filter(a => a.id !== id);
+        localStorage.setItem('userAssets', JSON.stringify(assets));
+        renderAssets();
+      });
+    });
+  };
+
+  assetForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newAsset = {
+      id: Date.now().toString(),
+      type: document.getElementById('asset-type').value,
+      bank: document.getElementById('bank-name').value,
+      name: document.getElementById('account-name').value,
+      balance: document.getElementById('asset-balance').value
+    };
+
+    assets.push(newAsset);
+    localStorage.setItem('userAssets', JSON.stringify(assets));
+    assetForm.reset();
+    renderAssets();
+  });
+
+  renderAssets();
+}
