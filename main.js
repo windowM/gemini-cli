@@ -249,3 +249,110 @@ if (assetForm) {
 
   renderAssets();
 }
+
+// 5. 스케줄 & 알람 로직 (schedule.html)
+const scheduleForm = document.getElementById('schedule-form');
+if (scheduleForm) {
+  const scheduleListContainer = document.getElementById('schedule-list-container');
+  let schedules = JSON.parse(localStorage.getItem('userSchedules')) || [];
+
+  const renderSchedules = () => {
+    if (schedules.length === 0) {
+      scheduleListContainer.innerHTML = '<p style="text-align: center; opacity: 0.5; margin: 40px 0;">등록된 일정이 없습니다.</p>';
+      return;
+    }
+
+    // 시간순 정렬
+    schedules.sort((a, b) => new Date(a.time) - new Date(b.time));
+
+    let html = `
+      <table class="asset-table">
+        <thead>
+          <tr>
+            <th>일정 내용</th>
+            <th>시간</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          ${schedules.map(item => {
+            const isPast = new Date(item.time) < new Date();
+            return `
+              <tr style="${isPast ? 'opacity: 0.5;' : ''}">
+                <td>
+                  <strong>${item.title}</strong>
+                  ${isPast ? ' <small>(종료)</small>' : ''}
+                </td>
+                <td>${item.time.replace('T', ' ')}</td>
+                <td style="text-align: right;">
+                  <button class="delete-schedule-btn" data-id="${item.id}" style="background:none; border:none; color:#ef4444; cursor:pointer;">삭제</button>
+                </td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    `;
+    scheduleListContainer.innerHTML = html;
+
+    // 삭제 이벤트
+    document.querySelectorAll('.delete-schedule-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.target.getAttribute('data-id');
+        schedules = schedules.filter(s => s.id !== id);
+        localStorage.setItem('userSchedules', JSON.stringify(schedules));
+        renderSchedules();
+      });
+    });
+  };
+
+  scheduleForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newSchedule = {
+      id: Date.now().toString(),
+      title: document.getElementById('schedule-title').value,
+      time: document.getElementById('schedule-time').value,
+      notified: false
+    };
+
+    schedules.push(newSchedule);
+    localStorage.setItem('userSchedules', JSON.stringify(schedules));
+    scheduleForm.reset();
+    renderSchedules();
+    
+    // 알림 권한 요청 (브라우저 알림)
+    if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+      Notification.requestPermission();
+    }
+  });
+
+  // 알람 체크 (1분마다)
+  setInterval(() => {
+    const now = new Date();
+    let updated = false;
+
+    schedules.forEach(s => {
+      const scheduleTime = new Date(s.time);
+      // 예약 시간이 지났고 아직 알림을 보내지 않았으며, 5분 이내의 일정인 경우
+      if (scheduleTime <= now && !s.notified && (now - scheduleTime) < 300000) {
+        if (Notification.permission === 'granted') {
+          new Notification('📅 오피스 헬퍼 일정 알림', {
+            body: `일정: ${s.title}`,
+            icon: '/favicon.ico'
+          });
+        } else {
+          alert(`⏰ 알람: ${s.title}`);
+        }
+        s.notified = true;
+        updated = true;
+      }
+    });
+
+    if (updated) {
+      localStorage.setItem('userSchedules', JSON.stringify(schedules));
+      renderSchedules();
+    }
+  }, 10000); // 10초마다 체크
+
+  renderSchedules();
+}
